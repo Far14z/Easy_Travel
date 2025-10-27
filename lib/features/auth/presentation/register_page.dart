@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
+
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
@@ -18,7 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: "First Name",
+              hintText: 'First name',
             ),
           ),
         ),
@@ -27,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: "Last Name",
+              hintText: 'Last name',
             ),
           ),
         ),
@@ -36,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: "Email",
+              hintText: 'Email',
             ),
             keyboardType: TextInputType.emailAddress,
           ),
@@ -46,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: "Password",
+              hintText: 'Password',
               suffixIcon: IconButton(
                 onPressed: () {
                   setState(() {
@@ -64,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: SizedBox(
             height: 48,
             width: double.infinity,
-            child: FilledButton(onPressed: (){}, child: Text("Sign Up")),
+            child: FilledButton(onPressed: () {}, child: Text('Sign up')),
           ),
         ),
       ],

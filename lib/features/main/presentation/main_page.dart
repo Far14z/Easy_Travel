@@ -1,4 +1,4 @@
-import 'package:easy_travel/home_page.dart';
+import 'package:easy_travel/features/home/presentation/home_page.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -14,31 +14,26 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: HomePage(),
-
+      body: SafeArea(child: HomePage()),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-
         onTap: _onIndexChanged,
-
         items: [
           BottomNavigationBarItem(
-            activeIcon: Icon(Icons.home), 
+            activeIcon: Icon(Icons.home),
             icon: Icon(Icons.home_outlined),
-            label: "Home"
-            ),
-
+            label: 'Home',
+          ),
           BottomNavigationBarItem(
             activeIcon: Icon(Icons.favorite),
             icon: Icon(Icons.favorite_outline),
-            label: "Favorite",
+            label: 'Favorites',
           ),
-
           BottomNavigationBarItem(
             activeIcon: Icon(Icons.person),
-            icon: Icon(Icons.person_outline), 
-            label: "Person"
-            ),
+            icon: Icon(Icons.person_outline),
+            label: 'Profile',
+          ),
         ],
       ),
     );

@@ -1,8 +1,10 @@
-import 'package:easy_travel/main_page.dart';
+
+import 'package:easy_travel/features/main/presentation/main_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -19,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: "Email",
+              hintText: 'Email',
             ),
             keyboardType: TextInputType.emailAddress,
           ),
@@ -29,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: "Password",
+              hintText: 'Password',
               suffixIcon: IconButton(
                 onPressed: () {
                   setState(() {
@@ -47,10 +49,15 @@ class _LoginPageState extends State<LoginPage> {
           child: SizedBox(
             height: 48,
             width: double.infinity,
-            child: FilledButton(onPressed: (){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainPage()),
-              );
-            }, child: Text("Sign In")),
+            child: FilledButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainPage()),
+                );
+              },
+              child: Text('Sign in'),
+            ),
           ),
         ),
       ],

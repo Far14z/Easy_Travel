@@ -1,7 +1,9 @@
-import 'package:easy_travel/features/auth/presentation/login_page.dart';
+import 'package:easy_travel/features/auth/presentation/pages/login_page.dart';
 import 'package:easy_travel/core/ui/theme.dart';
 import 'package:easy_travel/features/home/data/destination_service.dart';
-import 'package:easy_travel/features/home/presentation/blocs/destination_bloc.dart';
+import 'package:easy_travel/features/home/domain/category.dart';
+import 'package:easy_travel/features/home/presentation/blocs/home_bloc.dart';
+import 'package:easy_travel/features/home/presentation/blocs/home_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,6 +22,7 @@ class MainApp extends StatelessWidget {
         BlocProvider(
           create: (context) =>
               HomeBloc(service: DestinationService())
+              ..add(GetDestinationsByCategory(category: CategoryType.all))
         ),
         
       ],

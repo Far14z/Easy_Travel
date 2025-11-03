@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:easy_travel/features/home/data/destination_service.dart';
-import 'package:easy_travel/features/home/presentation/blocs/destination_event.dart';
-import 'package:easy_travel/features/home/presentation/blocs/destinations_states.dart';
+import 'package:easy_travel/features/home/presentation/blocs/home_event.dart';
+import 'package:easy_travel/features/home/presentation/blocs/home_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -16,11 +16,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     
-    /*
     if (event.category == state.selectedCategory &&
         state.destinations.isNotEmpty) {
       return;
-    }*/
+    }
 
     emit(
       state.copyWith(

@@ -1,22 +1,45 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_travel/core/constant/api_const.dart';
 import 'package:easy_travel/features/home/domain/category.dart';
 import 'package:easy_travel/features/home/domain/destination.dart';
 import 'package:http/http.dart' as http;
 
 class DestinationService {
-  final String baseUrl =
-      "https://destinationapp-h4e8dvace3fqffbb.eastus-01.azurewebsites.net/api/destinations";
+  Future<List<Destination>> getDestinations({
+    required CategoryType category,
+  }) async {
+    try {
+      final Uri uri = Uri.parse(ApiConstants.baseUrl).replace(
+        path: ApiConstants.destinationsEndpoint,
+        queryParameters: category == CategoryType.all
+            ? null
+            : {'type': category.label},
+      );
 
-  Future<List<Destination>> getDestinations({CategoryType category= CategoryType.all}) async {
-    final query = category == CategoryType.all ? '': category.label;
-    final response = await http.get(Uri.parse('$baseUrl?type=$query'));
+      final response = await http.get(uri);
 
-    if (response.statusCode == HttpStatus.ok) {
-      List maps = jsonDecode(response.body)['results'];
-      return maps.map((json) => Destination.fromJson(json)).toList();
+      if (response.statusCode == HttpStatus.ok) {
+        List maps = jsonDecode(response.body)['results'];
+        return maps.map((json) => Destination.fromJson(json)).toList();
+      }
+
+      if (response.statusCode == HttpStatus.notFound) {
+        throw HttpException('No destinations found (404)');
+      }
+
+      if (response.statusCode >= 500) {
+        throw HttpException('Server error ${response.statusCode}');
+      }
+
+      throw HttpException('Unexpected HTTP Status: ${response.statusCode}');
+    } on SocketException {
+      throw const SocketException('Failed to stablish network connection');
+    } on FormatException catch (e) {
+      throw FormatException('Failed to parse reponse $e');
+    } catch (e) {
+      throw Exception('Unexpect error while fetchng destinations: $e');
     }
-    return [];
   }
 }

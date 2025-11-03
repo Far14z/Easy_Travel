@@ -1,17 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_travel/core/constant/api_const.dart';
 import 'package:easy_travel/features/auth/domain/user.dart';
 import 'package:http/http.dart' as http;
 
 class AuhtService {
-  final String baseUrl =
-      "https://destinationapp-h4e8dvace3fqffbb.eastus-01.azurewebsites.net/api/user/login";
 
   Future<User> login(String email, String password) async {
     try {
+      final Uri uri = Uri.parse(ApiConstants.baseUrl);
+
       final http.Response response = await http.post(
-        Uri.parse(baseUrl),
+        uri,
         headers: {'Content-type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
@@ -21,10 +22,21 @@ class AuhtService {
         return User.fromJson(json);
       }
 
-      return Future.error(response.statusCode);
+      if (response.statusCode == HttpStatus.notFound) {
+        throw HttpException('No destinations found (404)');
+      }
 
+      if (response.statusCode >= 500) {
+        throw HttpException('Server error ${response.statusCode}');
+      }
+
+      throw HttpException('Unexpected HTTP Status: ${response.statusCode}');
+    } on SocketException {
+      throw const SocketException('Failed to stablish network connection');
+    } on FormatException catch (e) {
+      throw FormatException('Failed to parse reponse $e');
     } catch (e) {
-      return Future.error(e.toString());
+      throw Exception('Unexpect error while fetchng destinations: $e');
     }
   }
 }

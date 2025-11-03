@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        BlocBuilder<DestinationsBloc, DestinationsStates>(
+        BlocBuilder<DestinationsBloc, HomeState>(
           builder: (context, state) => SizedBox(
             height: 48,
             child: ListView.separated(
@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: BlocBuilder<DestinationsBloc, DestinationsStates>(
+          child: BlocBuilder<DestinationsBloc, HomeState>(
             builder: (context, state) {
               if (state.isLoading) {
                 return const Center(child: CircularProgressIndicator());

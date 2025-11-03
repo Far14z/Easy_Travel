@@ -4,70 +4,37 @@ import 'package:easy_travel/features/home/presentation/blocs/destination_event.d
 import 'package:easy_travel/features/home/presentation/blocs/destinations_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DestinationsBloc extends Bloc<DestinationsEvent, DestinationsStates> {
-  final DestinationService destinationService;
+class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  final DestinationService service;
 
-  DestinationsBloc({required this.destinationService})
-    : super(DestinationsStates()) {
-    on<GetDestinationsByCategory>(_getDestinationByCategory);
-    on<GetAllDestinations>(_getAllDestinations);
+  HomeBloc({required this.service}) : super(HomeState()) {
+    on<GetDestinationsByCategory>(_getDestinationsByCategory);
   }
 
-  FutureOr<void> _getDestinationByCategory(event, emit) async {
+  FutureOr<void> _getDestinationsByCategory(
+    GetDestinationsByCategory event,
+    Emitter<HomeState> emit,
+  ) async {
+    
+    /*
+    if (event.category == state.selectedCategory &&
+        state.destinations.isNotEmpty) {
+      return;
+    }*/
+
     emit(
       state.copyWith(
-        isLoading: true,
-        selectedCategory: event.category,
-        message: null,
+        status: Status.loading,
+        selectedCategory: event.category
       ),
     );
     try {
-      final destinations = await DestinationService().getDestinations(
+      final destinations = await service.getDestinations(
         category: event.category,
       );
-      emit(state.copyWith(isLoading: false, destinations: destinations));
+      emit(state.copyWith(status: Status.success, destinations: destinations));
     } catch (e) {
-      emit(state.copyWith(isLoading: false, message: e.toString()));
-    }
-  }
-
-  Future<void> getDestinationsByCategory(
-    Emitter emit,
-    GetDestinationsByCategory event,
-  ) async {
-    {
-      emit(
-        state.copyWith(
-          isLoading: true,
-          selectedCategory: event.category,
-          message: null,
-        ),
-      );
-      try {
-        final destinations = await DestinationService().getDestinations(
-          category: event.category,
-        );
-        emit(state.copyWith(isLoading: false, destinations: destinations));
-      } catch (e) {
-        emit(state.copyWith(isLoading: false, message: e.toString()));
-      }
-    }
-  }
-
-  Future<void> _getAllDestinations(
-    GetAllDestinations event,
-    Emitter emit,
-  ) async {
-    {
-      emit(
-        state.copyWith(isLoading: true, selectedCategory: 'All', message: null),
-      );
-      try {
-        final destinations = await DestinationService().getDestinations();
-        emit(state.copyWith(isLoading: false, destinations: destinations));
-      } catch (e) {
-        emit(state.copyWith(isLoading: false, message: e.toString()));
-      }
+      emit(state.copyWith(status: Status.failure, message: e.toString()));
     }
   }
 }

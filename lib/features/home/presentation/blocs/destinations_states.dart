@@ -1,17 +1,30 @@
 import 'package:easy_travel/features/home/domain/destination.dart';
 
-abstract class DestinationsStates {}
+class DestinationsStates {
 
-class DestinationsInitialState extends DestinationsStates {}
-
-class DestinationsLoadingState extends DestinationsStates {}
-
-class DestinationSuccessState extends DestinationsStates {
+  final bool isLoading;
+  final String selectedCategory;
   final List<Destination> destinations;
-  DestinationSuccessState({required this.destinations});
-}
-
-class DestiantionFailureState extends DestinationsStates {
   final String message;
-  DestiantionFailureState({required this.message});
+
+  const DestinationsStates({
+    this.isLoading = false,
+    this.selectedCategory = 'All',
+    this.destinations = const [],
+    this.message = '',
+  });
+
+  DestinationsStates copyWith({
+    bool? isLoading,
+    String? selectedCategory,
+    List<Destination>? destinations,
+    String? message,
+  }) {
+    return DestinationsStates(
+      isLoading: isLoading ?? this.isLoading,
+      selectedCategory: selectedCategory ?? this.selectedCategory,
+      destinations: destinations ?? this.destinations,
+      message: message ?? this.message,
+    );
+  }
 }

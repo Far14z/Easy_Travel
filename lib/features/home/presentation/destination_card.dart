@@ -26,11 +26,19 @@ class DestinationCard extends StatelessWidget {
               ),
             ),
           ),
-          Text(
-            destination.title,
-            style: TextStyle(fontWeight: FontWeight.bold),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  destination.title,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(destination.overview, maxLines: 1,),
+              ],
+            ),
           ),
-          Text(destination.overview),
         ],
       ),
     );

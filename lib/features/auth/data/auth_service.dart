@@ -9,7 +9,7 @@ class AuhtService {
 
   Future<User> login(String email, String password) async {
     try {
-      final Uri uri = Uri.parse(ApiConstants.baseUrl);
+      final Uri uri = Uri.parse(ApiConstants.baseUrl).replace(path: ApiConstants.loginEndpoint);
 
       final http.Response response = await http.post(
         uri,
@@ -36,7 +36,7 @@ class AuhtService {
     } on FormatException catch (e) {
       throw FormatException('Failed to parse reponse $e');
     } catch (e) {
-      throw Exception('Unexpect error while fetchng destinations: $e');
+      throw Exception('$e');
     }
   }
 }

@@ -1,11 +1,11 @@
 import 'package:easy_travel/core/enums/status.dart';
 import 'package:easy_travel/features/home/domain/category.dart';
-import 'package:easy_travel/features/home/domain/destination.dart';
 import 'package:easy_travel/features/home/presentation/blocs/home_bloc.dart';
 import 'package:easy_travel/features/home/presentation/blocs/home_event.dart';
 import 'package:easy_travel/features/home/presentation/blocs/home_states.dart';
-import 'package:easy_travel/features/home/presentation/widgets/destination_card.dart';
+import 'package:easy_travel/features/home/presentation/models/destinations_ui.dart';
 import 'package:easy_travel/features/home/presentation/pages/destination_detail_card.dart';
+import 'package:easy_travel/features/home/presentation/widgets/destination_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -48,35 +48,32 @@ class HomePage extends StatelessWidget {
               BlocSelector<
                 HomeBloc,
                 HomeState,
-                (Status, List<Destination>, String?)
+                (Status, List<DestinationsUi>, String?)
               >(
                 selector: (state) =>
                     (state.status, state.destinations, state.message),
                 builder: (context, state) {
                   final (status, destinations, message) = state;
-
                   switch (status) {
                     case Status.loading:
                       return const Center(child: CircularProgressIndicator());
-
                     case Status.failure:
-                      return Center(child: Text(message ?? 'Unknow error'));
-
+                      return Center(child: Text(message ?? 'Unknown error'));
                     case Status.success:
                       return ListView.builder(
                         itemCount: destinations.length,
                         itemBuilder: (context, index) {
-                          final Destination destination = destinations[index];
+                          final DestinationsUi destination = destinations[index];
                           return GestureDetector(
                             onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => DestinationDetailPage(
-                                  destination: destination,
+                                  destination: destination.destination,
                                 ),
                               ),
                             ),
-                            child: DestinationCard(destination: destination),
+                            child: DestinationCard(destinationUi: destination),
                           );
                         },
                       );

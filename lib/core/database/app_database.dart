@@ -23,11 +23,11 @@ class AppDatabase {
       path,
       version: 1,
       onCreate: (db, version) {
-        db.execute('''CREATE TABLE destinations ( 
-      id INTEGER PRIMARY KEY,
-      title TEXT, 
-      poster_path, 
-      TEXT, overview TEXT)''');
+        db.execute('''create table destinations 
+      (id integer primary key,
+      title text,
+      poster_path text, 
+      overview text)''');
       },
     );
   }

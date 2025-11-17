@@ -15,7 +15,7 @@ class ReviewService {
       final response = await http.get(uri);
 
       if (response.statusCode == HttpStatus.ok) {
-        List<Map<String, dynamic>> jsons = jsonDecode(response.body);
+        List jsons = jsonDecode(response.body);
         return jsons.map((json) => Review.fromJson(json)).toList();
       }
       return Future.error(

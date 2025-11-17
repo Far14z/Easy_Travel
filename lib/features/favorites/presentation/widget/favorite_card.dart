@@ -1,6 +1,6 @@
 import 'package:easy_travel/features/favorites/presentation/blocs/favorites_bloc.dart';
 import 'package:easy_travel/features/favorites/presentation/blocs/favorites_event.dart';
-import 'package:easy_travel/features/home/domain/destination.dart';
+import 'package:easy_travel/features/home/domain/models/destination.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

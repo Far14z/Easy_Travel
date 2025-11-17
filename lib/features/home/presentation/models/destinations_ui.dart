@@ -1,4 +1,4 @@
-import 'package:easy_travel/features/home/domain/destination.dart';
+import 'package:easy_travel/features/home/domain/models/destination.dart';
 
 class DestinationsUi {
   final Destination destination;

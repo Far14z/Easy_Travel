@@ -1,7 +1,7 @@
 import 'package:easy_travel/core/enums/status.dart';
 import 'package:easy_travel/features/favorites/presentation/blocs/favorites_bloc.dart';
 import 'package:easy_travel/features/favorites/presentation/blocs/favorites_event.dart';
-import 'package:easy_travel/features/home/domain/category.dart';
+import 'package:easy_travel/features/home/domain/models/category.dart';
 import 'package:easy_travel/features/home/presentation/blocs/home_bloc.dart';
 import 'package:easy_travel/features/home/presentation/blocs/home_event.dart';
 import 'package:easy_travel/features/home/presentation/blocs/home_states.dart';

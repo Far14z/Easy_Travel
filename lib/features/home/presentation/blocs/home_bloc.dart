@@ -1,17 +1,14 @@
 import 'dart:async';
 import 'package:easy_travel/core/enums/status.dart';
-import 'package:easy_travel/features/home/data/destination_service.dart';
-import 'package:easy_travel/features/home/data/destinations_dao.dart';
-import 'package:easy_travel/features/home/domain/destination.dart';
+import 'package:easy_travel/features/home/domain/repository/destination_respository.dart';
 import 'package:easy_travel/features/home/presentation/blocs/home_event.dart';
 import 'package:easy_travel/features/home/presentation/blocs/home_states.dart';
 import 'package:easy_travel/features/home/presentation/models/destinations_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final DestinationService service;
-  final DestinationDao dao;
-  HomeBloc({required this.service, required this.dao}) : super(HomeState()) {
+  final DestinationRepository repository;
+  HomeBloc({required this.repository}) : super(HomeState()) {
     on<GetDestinationsByCategory>(_getDestinationsByCategory);
     on<ToggleFavorite>(_toggleFavorite);
   }
@@ -20,24 +17,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ToggleFavorite event,
     Emitter<HomeState> emit,
   ) async {
-    List<Destination> favorite = await dao.fectchAll();
-    List<int> ids = favorite.map((favorite) => favorite.id).toList();
+    await repository.toggleFavorite(event.destination);
 
-    final Destination destination = event.destination;
-    final bool isFavorite = ids.contains(destination.id);
+    final favoriteIds = await repository.getFavoriteIds();
 
-    if (isFavorite) {
-      await dao.delete(destination.id);
-    } else {
-      await dao.insert(destination);
-    }
-
-    final List<DestinationsUi> updateList = state.destinations.map((destination) {
+    final List<DestinationsUi> updateList = state.destinations.map((
+      destination,
+    ) {
       return DestinationsUi(
         destination: destination.destination,
-        isFavorite: event.destination.id == destination.destination.id
-            ? !destination.isFavorite
-            : destination.isFavorite,
+        isFavorite: favoriteIds.contains(destination.destination.id)
       );
     }).toList();
 
@@ -48,20 +37,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     GetDestinationsByCategory event,
     Emitter<HomeState> emit,
   ) async {
+    /*
     if (event.category == state.selectedCategory &&
         state.destinations.isNotEmpty) {
       return;
     }
+    */
 
     emit(
       state.copyWith(status: Status.loading, selectedCategory: event.category),
     );
     try {
-      final destinations = await service.getDestinations(
-        category: event.category,
+      final destinations = await repository.getDestinationsByCategory(
+        event.category,
       );
-      List<Destination> favorite = await dao.fectchAll();
-      List<int> ids = favorite.map((favorite) => favorite.id).toList();
+      final ids = await repository.getFavoriteIds();
 
       final items = destinations
           .map(

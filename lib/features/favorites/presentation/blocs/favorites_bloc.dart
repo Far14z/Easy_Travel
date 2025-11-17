@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:easy_travel/features/favorites/presentation/blocs/favorites_event.dart';
 import 'package:easy_travel/features/favorites/presentation/blocs/favorites_state.dart';
-import 'package:easy_travel/features/home/data/destinations_dao.dart';
-import 'package:easy_travel/features/home/domain/destination.dart';
+import 'package:easy_travel/features/home/data/local/dao/destinations_dao.dart';
+import 'package:easy_travel/features/home/domain/models/destination.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
@@ -19,7 +19,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
     GetAllFavorites event,
     Emitter<FavoritesState> emit,
   ) async {
-    final List<Destination> destinations = await dao.fectchAll();
+    final List<Destination> destinations = await dao.fetchAll();
     emit(FavoritesState(destinations: destinations));
   }
 
@@ -29,7 +29,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
   ) async {
     dao.delete(event.id);
 
-    final List<Destination> destinations = await dao.fectchAll();
+    final List<Destination> destinations = await dao.fetchAll();
     emit(FavoritesState(destinations: destinations));
   }
 }

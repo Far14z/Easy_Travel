@@ -5,6 +5,8 @@ import 'package:easy_travel/features/home/domain/models/category.dart';
 import 'package:easy_travel/features/home/presentation/blocs/home_bloc.dart';
 import 'package:easy_travel/features/home/presentation/blocs/home_event.dart';
 import 'package:easy_travel/features/home/presentation/blocs/home_states.dart';
+import 'package:easy_travel/features/home/presentation/blocs/review_bloc.dart';
+import 'package:easy_travel/features/home/presentation/blocs/review_event.dart';
 import 'package:easy_travel/features/home/presentation/models/destinations_ui.dart';
 import 'package:easy_travel/features/home/presentation/pages/destination_detail_card.dart';
 import 'package:easy_travel/features/home/presentation/widgets/destination_card.dart';
@@ -20,10 +22,10 @@ class HomePage extends StatelessWidget {
 
     return SafeArea(
       child: BlocListener<HomeBloc, HomeState>(
-        listenWhen: (previous, current) => 
-          previous.destinations != current.destinations,
+        listenWhen: (previous, current) =>
+            previous.destinations != current.destinations,
         listener: (context, state) =>
-          context.read<FavoritesBloc>().add(GetAllFavorites()),
+            context.read<FavoritesBloc>().add(GetAllFavorites()),
         child: Column(
           children: [
             BlocSelector<HomeBloc, HomeState, CategoryType>(
@@ -64,24 +66,39 @@ class HomePage extends StatelessWidget {
                       final (status, destinations, message) = state;
                       switch (status) {
                         case Status.loading:
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
                         case Status.failure:
-                          return Center(child: Text(message ?? 'Unknown error'));
+                          return Center(
+                            child: Text(message ?? 'Unknown error'),
+                          );
                         case Status.success:
                           return ListView.builder(
                             itemCount: destinations.length,
                             itemBuilder: (context, index) {
-                              final DestinationsUi destination = destinations[index];
+                              final DestinationsUi destination =
+                                  destinations[index];
                               return GestureDetector(
-                                onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DestinationDetailPage(
-                                      destination: destination.destination,
+                                onTap: () {
+                                  context.read<ReviewBloc>().add(
+                                    GetReviews(id: destination.destination.id),
+                                  );
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          DestinationDetailPage(
+                                            destination:
+                                                destination.destination,
+                                          ),
                                     ),
-                                  ),
+                                  );
+                                },
+                                child: DestinationCard(
+                                  destinationUi: destination,
                                 ),
-                                child: DestinationCard(destinationUi: destination),
                               );
                             },
                           );
